@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const listMenu = [
   { name: "inicio", slug: "/" },
@@ -36,23 +37,37 @@ const listMenu = [
 ];
 
 function Navbar() {
+  const router = useRouter();
+
+  React.useEffect(() => {
+    console.log(router.pathname);
+  }, [router.pathname]);
+
   return (
-    <div className="h-20 bg-white w-full flex items-center justify-between px-10 text-[#0072CE] font-bold">
-      <div className="flex items-center gap-9">
+    <div className="h-20 bg-[#051927] w-full flex items-center justify-between px-20 text-white font-normal z-50">
+      <div className="flex items-center gap-16">
         <div className="">
           <Image width="35" height="35" src={"/logo-system-group.png"} alt="" />
         </div>
-        <ul className="flex gap-6 uppercase items-center">
+        <ul className="flex gap-6 capitalize items-center">
           {listMenu.map((item, index) => {
             if (item.subRoutes) {
               return (
                 <Menu
                   as="div"
-                  className="relative inline-block text-left"
+                  className="relative inline-block text-left z-50 "
                   key={index}
                 >
                   <div>
-                    <Menu.Button className="flex gap-0 items-center uppercase">
+                    <Menu.Button
+                      className={`flex gap-0 items-center capitalize  ${
+                        item.subRoutes.find(
+                          ({ slug }) => slug == router.pathname
+                        )
+                          ? "border-b-4 border-cyan-600 "
+                          : ""
+                      }`}
+                    >
                       {item.name}
                       <FaChevronDown className="ml-2 -mr-1 h-3 w-3  hover:opacity-50" />
                     </Menu.Button>
@@ -66,13 +81,10 @@ function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-left">
                       <div className="px-1 py-1 ">
                         {item.subRoutes.map((subItem, subIndex) => {
                           return (
-                            // <li key={subIndex}>
-                            // <Link href={subItem.slug}>{subItem.name}</Link>
-                            // </li>
                             <Menu.Item key={subIndex}>
                               {({ active }) => (
                                 <button
@@ -80,20 +92,11 @@ function Navbar() {
                                     active
                                       ? "bg-violet-500 text-white"
                                       : "text-gray-900"
-                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm capitalize`}
+                                  } w-full  rounded-md px-2 py-2 text-sm capitalize text-left`}
                                 >
-                                  {active ? (
-                                    <EditActiveIcon
-                                      className="mr-2 h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <EditInactiveIcon
-                                      className="mr-2 h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                  {subItem.name}
+                                  <Link href={subItem.slug}>
+                                    {subItem.name}
+                                  </Link>
                                 </button>
                               )}
                             </Menu.Item>
@@ -106,7 +109,14 @@ function Navbar() {
               );
             } else {
               return (
-                <li key={index}>
+                <li
+                  key={index}
+                  className={
+                    router.pathname == item.slug
+                      ? "border-b-4 border-cyan-600 "
+                      : ""
+                  }
+                >
                   <Link href={item.slug}>{item.name}</Link>
                 </li>
               );
