@@ -6,7 +6,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <Flex justifyContent={"space-around"} bgColor={"#3679FB"} py={"3rem"}>
+    <Flex justifyContent={"space-around"} bgColor={"#051927"} py={"3rem"}>
       <Flex direction={"column"} gap={"10"}>
         <Box display={"flex"} flexDirection={"column"} gap={"2"}>
           <Text fontSize="xl" as={"b"}>

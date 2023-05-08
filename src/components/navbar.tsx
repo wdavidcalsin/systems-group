@@ -44,7 +44,7 @@ function Navbar() {
   }, [router.pathname]);
 
   return (
-    <div className="h-20 bg-[#051927] w-full flex items-center justify-between px-20 text-white font-normal z-50">
+    <div className="h-20 bg-[#051927] bg-opacity-50 w-full flex items-center justify-between px-20 text-white font-normal z-50 relative">
       <div className="flex items-center gap-16">
         <div className="">
           <Image width="35" height="35" src={"/logo-system-group.png"} alt="" />
@@ -109,15 +109,17 @@ function Navbar() {
               );
             } else {
               return (
-                <li
-                  key={index}
-                  className={
-                    router.pathname == item.slug
-                      ? "border-b-4 border-cyan-600 "
-                      : ""
-                  }
-                >
-                  <Link href={item.slug}>{item.name}</Link>
+                <li key={index}>
+                  <Link
+                    href={item.slug}
+                    className={
+                      router.pathname == item.slug
+                        ? "border-b-4 border-cyan-600 py-2 "
+                        : ""
+                    }
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               );
             }
