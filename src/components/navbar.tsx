@@ -39,10 +39,6 @@ const listMenu = [
 function Navbar() {
   const router = useRouter();
 
-  React.useEffect(() => {
-    console.log(router.pathname);
-  }, [router.pathname]);
-
   return (
     <div className="h-20 bg-[#051927] bg-opacity-50 w-full flex items-center justify-between px-20 text-white font-normal z-50 relative">
       <div className="flex items-center gap-16">
@@ -125,10 +121,10 @@ function Navbar() {
         </ul>
       </div>
       <div className="uppercase flex text-white">
-        <Link href="/soporte" className="bg-[#0072CE] p-4">
+        <Link href="#" className="bg-[#0072CE] p-4">
           soporte
         </Link>
-        <Link href="/empresa" className="bg-[#F1C400] p-4 text-black">
+        <Link href="#" className="bg-[#F1C400] p-4 text-black">
           empresa
         </Link>
       </div>

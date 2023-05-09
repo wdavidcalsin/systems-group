@@ -34,16 +34,16 @@ const settings = {
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
+  // const [slider, setSlider] = React.useState<Slider | null>(null);
 
-  const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "10px" });
+  // const top = useBreakpointValue({ base: "90%", md: "50%" });
+  // const side = useBreakpointValue({ base: "30%", md: "10px" });
 
-  const cards = [
-    "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg",
-    "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-  ];
+  // const cards = [
+  //   "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg",
+  //   "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+  //   "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+  // ];
 
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
