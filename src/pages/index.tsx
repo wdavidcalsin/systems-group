@@ -1,12 +1,18 @@
 import * as React from "react";
-import Image from "next/image";
+
 import { Inter } from "next/font/google";
 import { Menu, Transition } from "@headlessui/react";
+import Slider from "react-slick";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
   Flex,
+  Heading,
   IconButton,
+  Image,
   Img,
   Stack,
   Text,
@@ -17,7 +23,6 @@ import { FaChevronDown } from "react-icons/fa";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
-import Slider from "react-slick";
 
 const settings = {
   dots: true,
@@ -27,23 +32,62 @@ const settings = {
   autoplay: true,
   speed: 500,
   autoplaySpeed: 5000,
-  slidesToShow: 1,
+  slidesToShow: 2,
   slidesToScroll: 1,
 };
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  // const [slider, setSlider] = React.useState<Slider | null>(null);
+  const [slider, setSlider] = React.useState<Slider | null>(null);
 
-  // const top = useBreakpointValue({ base: "90%", md: "50%" });
-  // const side = useBreakpointValue({ base: "30%", md: "10px" });
+  const top = useBreakpointValue({ base: "90%", md: "50%" });
+  const side = useBreakpointValue({ base: "30%", md: "10px" });
 
-  // const cards = [
-  //   "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg",
-  //   "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-  //   "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-  // ];
+  const cards = [
+    {
+      path: "viveandes.png",
+      title: "Viveandes",
+      description:
+        "Viveandes Works since 2009 to provide top quality tours in Peru & Bolivia to tours companies that search from quality and personalize.",
+    },
+    {
+      path: "travel-and-tour.png",
+      title: "Travel and Tour",
+      description:
+        "Tours en Perú y Paquetes de Viaje a Machu Picchu. Expertos en viajes y profesionales en turismo. Servicio 24/7",
+    },
+    {
+      path: "titicaca-travel.png",
+      title: "Titicaca Travel",
+      description:
+        "Titicaca Travel is a travel agency that offers tours in Peru and Bolivia.",
+    },
+    {
+      path: "inka.png",
+      title: "Inka Expeditions",
+      description:
+        "Inka Expeditions Puno, Puno, Peru. 692 likes · 1 was here. Agencia de viajes y turismo profesionales en turismo operador directo garantia seguridad.",
+    },
+    {
+      path: "electro-puno.png",
+      title: "Electro Puno",
+      description:
+        "Empresa Regional de Servicio Publico de Electricidad de Puno S.A.A.. Somos una empresa de distribución y comercialización de energía eléctrica.",
+    },
+    {
+      path: "amarutours.png",
+      title: "Amaru Tours",
+      description:
+        "Somos un Operador Turístico en el Sur del Perú | Arequipa - Cañón de Colca, Puno - Lago Titicaca, Cusco - Machu Picchu, Bolivia - Salar de Uyuni.",
+    },
+  ].map((card) => {
+    const maxChars = 80;
+    if (card.description.length > maxChars) {
+      card.description = card.description.substring(0, maxChars) + "...";
+    }
+    return card;
+  });
 
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
@@ -254,7 +298,7 @@ export default function Home() {
                   <AiOutlineStar />
                 </Text>
                 <Flex gap={"2"}>
-                  700MB <Text color={"#3679FB"}>to</Text> 7GB
+                  400MB <Text color={"#3679FB"}>to</Text> 4GB
                 </Flex>
               </Flex>
               <Flex alignItems={"center"} gap="5">
@@ -363,6 +407,160 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
+      </Box>
+      <Box
+        display={"grid"}
+        placeItems="center"
+        gap={"10"}
+        py="20"
+        px={"5"}
+        bg={"white"}
+        color={"white"}
+      >
+        <Flex
+          direction={"column"}
+          alignItems="center"
+          gap={"5"}
+          color={"#353E44"}
+        >
+          <Text fontSize={["3xl", "4xl"]} as="b">
+            Nuestros Clientes
+          </Text>
+          <Text fontSize={["xl", "md"]} fontWeight="light">
+            La confianza es muy importante en nuestra empresa, nosotros
+            confiamos en nuestros clientes y ellos también confian en nosotros.
+          </Text>
+        </Flex>
+        <Box
+          position={"relative"}
+          height={"250px"}
+          width={["100%", "80%"]}
+          overflow={"hidden"}
+        >
+          {/* CSS files for react-slick */}
+          <link
+            rel="stylesheet"
+            type="text/css"
+            charSet="UTF-8"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+          />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+          />
+          {/* Left Icon */}
+          <IconButton
+            aria-label="left-arrow"
+            colorScheme="messenger"
+            bgColor={"#3679FB"}
+            borderRadius="full"
+            position="absolute"
+            left={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            onClick={() => slider?.slickPrev()}
+          >
+            <BiLeftArrowAlt />
+          </IconButton>
+          {/* Right Icon */}
+          <IconButton
+            aria-label="right-arrow"
+            colorScheme="messenger"
+            bgColor={"#3679FB"}
+            borderRadius="full"
+            position="absolute"
+            right={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            onClick={() => slider?.slickNext()}
+          >
+            <BiRightArrowAlt />
+          </IconButton>
+          {/* Slider */}
+          <Slider {...settings} ref={(slider) => setSlider(slider)}>
+            {cards.map(
+              (item, index) =>
+                index % 2 == 0 && (
+                  <Box
+                    key={index}
+                    height={"220px"}
+                    width={["100%", "50%"]}
+                    position="relative"
+                    color={"black"}
+                    overflow="hidden"
+                    // backgroundPosition="center"
+                    // backgroundRepeat="no-repeat"
+                    // backgroundSize="cover"
+                    // backgroundImage={`url(${url})`}
+                  >
+                    <Flex
+                      alignItems="center"
+                      gap={"4"}
+                      height="100%"
+                      direction={["column", "row"]}
+                    >
+                      <Card
+                        direction={{ base: "column", sm: "row" }}
+                        overflow="hidden"
+                        variant="outline"
+                        width={["100%", "50%"]}
+                      >
+                        <Flex bgColor={"white"} alignItems="center">
+                          <Image
+                            // objectFit="cover"
+                            maxW={{ base: "100%", sm: "200px" }}
+                            src={`img-clients/${item.path}`}
+                            alt="Caffe Latte"
+                          />
+                        </Flex>
+
+                        <Stack>
+                          <CardBody>
+                            <Heading size="md">{item.title}</Heading>
+
+                            <Text py="2" fontWeight={"light"}>
+                              {item.description}
+                            </Text>
+                          </CardBody>
+                        </Stack>
+                      </Card>
+                      <Card
+                        direction={{ base: "column", sm: "row" }}
+                        overflow="hidden"
+                        variant="outline"
+                        width={["100%", "50%"]}
+                      >
+                        <Flex bgColor={"white"} alignItems="center">
+                          <Image
+                            // objectFit="cover"
+                            maxW={{ base: "100%", sm: "200px" }}
+                            src={`img-clients/${cards[index + 1].path}`}
+                            alt="Caffe Latte"
+                          />
+                        </Flex>
+
+                        <Stack>
+                          <CardBody>
+                            <Heading size="md">
+                              {cards[index + 1].title}
+                            </Heading>
+
+                            <Text py="2" fontWeight={"light"}>
+                              {cards[index + 1].description}
+                            </Text>
+                          </CardBody>
+                        </Stack>
+                      </Card>
+                      {/* <Text flex={"1"}>Hola</Text> */}
+                    </Flex>
+                  </Box>
+                )
+            )}
+          </Slider>
+        </Box>
       </Box>
     </main>
   );

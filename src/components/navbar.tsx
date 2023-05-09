@@ -33,7 +33,21 @@ const listMenu = [
       },
     ],
   },
-  { name: "clientes", slug: "/clientes" },
+  {
+    name: "clientes",
+    slug: "/clientes",
+    subRoutes: [
+      {
+        name: "agencia de viajes",
+        slug: "/clientes/agencia-de-viajes",
+      },
+      { name: "hoteles", slug: "/clientes/hoteles" },
+      {
+        name: "instituciones",
+        slug: "/clientes/instituciones",
+      },
+    ],
+  },
 ];
 
 function Navbar() {
@@ -60,7 +74,7 @@ function Navbar() {
                         item.subRoutes.find(
                           ({ slug }) => slug == router.pathname
                         )
-                          ? "border-b-4 border-cyan-600 "
+                          ? "border-b-4 border-cyan-600 py-2 "
                           : ""
                       }`}
                     >
@@ -90,7 +104,9 @@ function Navbar() {
                                       : "text-gray-900"
                                   } w-full  rounded-md px-2 py-2 text-sm capitalize text-left`}
                                 >
-                                  <Link href={"#"}>{subItem.name}</Link>
+                                  <Link href={subItem.slug}>
+                                    {subItem.name}
+                                  </Link>
                                 </button>
                               )}
                             </Menu.Item>
