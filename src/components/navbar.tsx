@@ -1,5 +1,5 @@
+import * as React from "react";
 import Link from "next/link";
-import React from "react";
 
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";

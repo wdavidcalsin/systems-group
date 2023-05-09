@@ -1,3 +1,4 @@
+import * as React from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { Menu, Transition } from "@headlessui/react";
@@ -17,7 +18,6 @@ import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
 import Slider from "react-slick";
-import * as React from "react";
 
 const settings = {
   dots: true,

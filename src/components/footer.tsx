@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { ImLocation2 } from "react-icons/im";
