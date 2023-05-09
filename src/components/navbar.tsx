@@ -94,9 +94,7 @@ function Navbar() {
                                       : "text-gray-900"
                                   } w-full  rounded-md px-2 py-2 text-sm capitalize text-left`}
                                 >
-                                  <Link href={subItem.slug}>
-                                    {subItem.name}
-                                  </Link>
+                                  <Link href={"#"}>{subItem.name}</Link>
                                 </button>
                               )}
                             </Menu.Item>
@@ -135,42 +133,6 @@ function Navbar() {
         </Link>
       </div>
     </div>
-  );
-}
-
-function EditInactiveIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
-function EditActiveIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-    </svg>
   );
 }
 
