@@ -44,7 +44,7 @@ const ReginstrarDominio = () => {
             gap={"5"}
             color={"#353E44"}
           >
-            <Text fontSize={["3xl", "4xl"]} as="b">
+            <Text fontSize={["3xl", "5xl"]} as="b" fontFamily={"serif"}>
               Registrar Dominio
             </Text>
             <Text fontSize={["md", "md"]} fontWeight="light">
