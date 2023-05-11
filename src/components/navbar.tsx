@@ -6,6 +6,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { Box } from "@chakra-ui/react";
 
 const listMenu = [
   { name: "inicio", slug: "/" },
@@ -15,7 +16,7 @@ const listMenu = [
     subRoutes: [
       { name: "registrar dominio", slug: "/servicios/registrar-dominio" },
       { name: "web hosting", slug: "/servicios/web-hosting" },
-      { name: "diseño web", slug: "/servicios/diseño-web" },
+      { name: "diseño web", slug: "/servicios/desing-web" },
     ],
   },
   {
@@ -68,7 +69,7 @@ function Navbar() {
                   className="relative inline-block text-left z-50 "
                   key={index}
                 >
-                  <div>
+                  <Box>
                     <Menu.Button
                       className={`flex gap-0 items-center capitalize  ${
                         item.subRoutes.find(
@@ -81,7 +82,7 @@ function Navbar() {
                       {item.name}
                       <FaChevronDown className="ml-2 -mr-1 h-3 w-3  hover:opacity-50" />
                     </Menu.Button>
-                  </div>
+                  </Box>
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
@@ -92,27 +93,26 @@ function Navbar() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-left">
-                      <div className="px-1 py-1 ">
+                      <Box className="px-1 py-1 ">
                         {item.subRoutes.map((subItem, subIndex) => {
                           return (
                             <Menu.Item key={subIndex}>
                               {({ active }) => (
-                                <button
+                                <Link
+                                  href={subItem.slug}
                                   className={`${
                                     active
                                       ? "bg-violet-500 text-white"
                                       : "text-gray-900"
-                                  } w-full  rounded-md px-2 py-2 text-sm capitalize text-left`}
+                                  } w-full  rounded-md px-2 py-2 text-sm capitalize text-left flex items-center `}
                                 >
-                                  <Link href={subItem.slug}>
-                                    {subItem.name}
-                                  </Link>
-                                </button>
+                                  {subItem.name}
+                                </Link>
                               )}
                             </Menu.Item>
                           );
                         })}
-                      </div>
+                      </Box>
                     </Menu.Items>
                   </Transition>
                 </Menu>

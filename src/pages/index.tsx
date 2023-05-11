@@ -268,7 +268,6 @@ export default function Home() {
           <Flex
             direction={"column"}
             bgColor="white"
-            // color={"#353E44"}
             color={"black"}
             w="20rem"
             minH={"25rem"}
@@ -276,6 +275,12 @@ export default function Home() {
             rounded="2xl"
             alignItems={"center"}
             gap="10"
+            transition={"all .2s"}
+            _hover={{
+              zIndex: 60,
+              transform: "scale(1.02)",
+              shadow: "lg",
+            }}
           >
             <Text fontSize={"2xl"} fontWeight="bold">
               Emprendedores
@@ -325,6 +330,11 @@ export default function Home() {
             gap="10"
             position={"relative"}
             zIndex="50"
+            transition={"all .2s"}
+            _hover={{
+              zIndex: 60,
+              transform: "scale(1.02)",
+            }}
           >
             <Text fontSize={"2xl"} fontWeight="bold">
               Estandar
@@ -371,6 +381,12 @@ export default function Home() {
             rounded="2xl"
             alignItems={"center"}
             gap="10"
+            transition={"all .2s"}
+            _hover={{
+              zIndex: 60,
+              transform: "scale(1.02)",
+              shadow: "lg",
+            }}
           >
             <Text fontSize={"2xl"} fontWeight="bold">
               Profesional
@@ -491,10 +507,6 @@ export default function Home() {
                     position="relative"
                     color={"black"}
                     overflow="hidden"
-                    // backgroundPosition="center"
-                    // backgroundRepeat="no-repeat"
-                    // backgroundSize="cover"
-                    // backgroundImage={`url(${url})`}
                   >
                     <Flex
                       alignItems="center"
