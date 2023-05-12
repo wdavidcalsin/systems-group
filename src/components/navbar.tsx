@@ -17,6 +17,18 @@ const listMenu = [
       { name: "registrar dominio", slug: "/servicios/registrar-dominio" },
       { name: "web hosting", slug: "/servicios/web-hosting" },
       { name: "diseño web", slug: "/servicios/desing-web" },
+      {
+        name: "desarrollo de software",
+        slug: "/servicios/desarrollo-de-software",
+      },
+      {
+        name: "firma digital",
+        slug: "/servicios/firma-digital",
+      },
+      {
+        name: "Audio Streaming con AutoDJ",
+        slug: "/servicios/audio-streaming",
+      },
     ],
   },
   {
@@ -77,7 +89,7 @@ function Navbar() {
                         )
                           ? "border-b-4 border-cyan-600 py-2 "
                           : ""
-                      }`}
+                      }  hover:text-cyan-600`}
                     >
                       {item.name}
                       <FaChevronDown className="ml-2 -mr-1 h-3 w-3  hover:opacity-50" />
@@ -122,11 +134,11 @@ function Navbar() {
                 <li key={index}>
                   <Link
                     href={item.slug}
-                    className={
+                    className={`${
                       router.pathname == item.slug
                         ? "border-b-4 border-cyan-600 py-2 "
                         : ""
-                    }
+                    }  hover:text-cyan-600`}
                   >
                     {item.name}
                   </Link>
