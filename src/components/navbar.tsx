@@ -44,6 +44,10 @@ const listMenu = [
         name: "sistema de gestion para hoteles",
         slug: "/productos/sistema-de-gestion-para-hoteles",
       },
+      {
+        name: "sistema de tramite documentario",
+        slug: "/productos/sistema-de-tramite-documentario",
+      },
     ],
   },
   {

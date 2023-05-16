@@ -9,45 +9,44 @@ import {
 } from "@chakra-ui/react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const caracteristicas = [
   {
-    title: "Módulos de Ventas y Compras",
+    title: "Gestión de reservas",
     pathImg: "facturas.png",
   },
   {
-    title: "Administración de Productos",
+    title: "Ventas y Facturación",
     pathImg: "resumen-comprobantes.png",
   },
   {
-    title: "Administración de Servicios",
+    title: "Control de almacenes",
     pathImg: "boletas.png",
   },
   {
-    title: "Plantillas para impresión Matricial",
+    title:
+      "Privilegios de usuarios (Administrador, Recepcionista, Reservas y Auditoría)",
     pathImg: "resumen-de-boletas.png",
   },
   {
-    title: "Consulta de RUC online",
+    title: "Registro de huéspedes",
     pathImg: "comunicacion-baja.png",
   },
   {
-    title: "Control de almacenes",
+    title: "Control de caja",
     pathImg: "comunicacion-baja.png",
   },
   {
-    title: "Conversión de tipos de cambios",
-    pathImg: "comunicacion-baja.png",
-  },
-  {
-    title: "Privilegios de usuarios",
+    title:
+      "Configurabilidad (Monedas, Tarifas, Impuestos, Plantillas de factura, etc)",
     pathImg: "comunicacion-baja.png",
   },
 ];
 
-const SistemaDeVentas = () => {
+const SistemaDeGestionParaHoteles = () => {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -73,26 +72,30 @@ const SistemaDeVentas = () => {
               flex={1}
             >
               <Text fontSize={["3xl", "4xl"]} as="b">
-                Sistema de Ventas
+                Sistema de Gestión para Hoteles
               </Text>
               <Flex direction={"column"} gap="5">
                 <Text fontSize={["md", "md"]} fontWeight="light">
-                  Solución en la nube que facilita la gestión de su negocio en
-                  tiempo real desde cualquier lugar que tenga una conexión a
-                  internet.
+                  Las empresas cada vez están usando las tecnologías de la
+                  información para aumentar la rentabilidad de su negocio,
+                  GSHotel es un sistema de gestión de hoteles, donde puede
+                  Gestionar sus reservas, facturas, almacén y cuentas.Grandes y
+                  pequeños hoteles pueden ser gestionados con con GSHotel, desde
+                  cualquier lugar siempre que tenga una computadora con un
+                  navegador web actualizado y acceso a internet.
                 </Text>
-                <Text fontSize={["md", "md"]} fontWeight="light">
+                {/* <Text fontSize={["md", "md"]} fontWeight="light">
                   Con este sistema usted tendrá el control de sus ventas
                   (imprimir comprobantes de pago, facturas, boletas), compras,
                   almacén, caja, clientes, productos, cuentas por cobrar,
                   cuentas por pagar, reportes y otros.
-                </Text>
+                </Text> */}
               </Flex>
             </Flex>
             <Flex flex={1} justifyContent="center">
               <Box rounded="lg" overflow={"hidden"}>
                 <Image
-                  src="/img-page-productos-ventas/sistema-de-ventas.jpg"
+                  src="/img-page-productos-hoteles/sistema-de-hoteles.jpg"
                   alt=""
                   transition={"all .2s"}
                   _hover={{
@@ -136,11 +139,7 @@ const SistemaDeVentas = () => {
               <Text fontSize={["xl", "2xl"]} as="b" color={"#1192EE"}>
                 Características
               </Text>
-              <Flex gap="5">
-                {caracteristicas.map((caracteristica, index) => (
-                  <Flex key={index}></Flex>
-                ))}
-              </Flex>
+
               <List
                 spacing={3}
                 display="grid"
@@ -158,8 +157,60 @@ const SistemaDeVentas = () => {
           </Flex>
         </Flex>
       </Box>
+      <Box
+        display={"grid"}
+        placeItems="center"
+        gap={"10"}
+        py="20"
+        px={"5"}
+        bg={"white"}
+        color={"white"}
+      >
+        <Flex
+          width={["100%", "100%", "100%", "100%", "5xl"]}
+          direction="column"
+          gap={20}
+        >
+          <Flex alignItems={"center"} gap="10">
+            <Flex
+              direction={"column"}
+              alignItems="center"
+              gap={"5"}
+              color={"#353E44"}
+              flex={1}
+            >
+              <Text fontSize={["xl", "2xl"]} as="b" color={"#1192EE"}>
+                Características
+              </Text>
+
+              <Flex
+                direction={"column"}
+                justifyContent="center"
+                alignItems={"center"}
+                gap={10}
+              >
+                <iframe
+                  width="560"
+                  height="315"
+                  src="https://www.youtube.com/embed/q5zyA2Uo0OE"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen={true}
+                ></iframe>
+                <Link
+                  href="#"
+                  className="py-5 px-4 bg-[#FF7900] rounded-lg text-white"
+                >
+                  Vea Nuestros Precios
+                </Link>
+              </Flex>
+            </Flex>
+          </Flex>
+        </Flex>
+      </Box>
     </main>
   );
 };
 
-export default SistemaDeVentas;
+export default SistemaDeGestionParaHoteles;
