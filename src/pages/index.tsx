@@ -124,7 +124,7 @@ export default function Home() {
           direction={["column", "column", "row", "row"]}
           position={"relative"}
           zIndex={10}
-          px={["1rem", "8rem"]}
+          px={["1rem", "2rem", "8rem"]}
           gap={[5, 20]}
           pt={["10rem", "10rem", "10rem", "0"]}
         >
