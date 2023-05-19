@@ -75,6 +75,18 @@ const listMenu = [
         name: "instituciones",
         slug: "/clientes/instituciones",
       },
+      {
+        name: "medios de comunicacion",
+        slug: "/clientes/medios-de-comunicacion",
+      },
+      {
+        name: "organizaciones",
+        slug: "/clientes/organizaciones",
+      },
+      {
+        name: "restaurantes",
+        slug: "/clientes/restaurantes",
+      },
     ],
   },
 ];
