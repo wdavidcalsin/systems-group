@@ -89,6 +89,8 @@ export default function Home() {
     return card;
   });
 
+  const containerRef = useRef(null);
+
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -165,7 +167,12 @@ export default function Home() {
         px={"5"}
         color={"#353E44"}
       >
-        <Text fontSize={["3xl", "4xl"]} color={"#353E44"} as="b">
+        <Text
+          fontSize={["3xl", "4xl"]}
+          color={"#353E44"}
+          as="b"
+          textAlign={"center"}
+        >
           Soluciones y servicios en TIC
         </Text>
         <Flex gap={"20"} flexWrap="wrap" justifyContent={"center"}>
@@ -260,16 +267,18 @@ export default function Home() {
           </Text>
         </Flex>
         <Flex
-          gap={""}
-          flexWrap="wrap"
+          gap={["10", "10", "0"]}
+          // bgColor={"red"}
+          // flexWrap="wrap"
           justifyContent={"center"}
           alignItems="center"
+          flexDirection={["column", "column", "row"]}
         >
           <Flex
             direction={"column"}
             bgColor="white"
             color={"black"}
-            w="20rem"
+            w={["33.3", "33.3", "33.3", "33.3", "20rem"]}
             minH={"25rem"}
             p={5}
             rounded="2xl"
@@ -322,7 +331,7 @@ export default function Home() {
             shadow={"2xl"}
             // color={"#353E44"}
             color={"black"}
-            w="20rem"
+            w={["33.3", "33.3", "33.3", "33.3", "20rem"]}
             minH={"27rem"}
             p={5}
             rounded="2xl"
@@ -375,7 +384,7 @@ export default function Home() {
             bgColor="white"
             // color={"#353E44"}
             color={"black"}
-            w="20rem"
+            w={["33.3", "33.3", "33.3", "33.3", "20rem"]}
             minH={"25rem"}
             p={5}
             rounded="2xl"
