@@ -3,29 +3,6 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const typesFirmaDigital = [
-  {
-    title: "Facturas y sus respectivas notas de crédito y debito",
-    pathImg: "facturas.png",
-  },
-  {
-    title: "Resumen de contingencia de comprobantes.",
-    pathImg: "resumen-comprobantes.png",
-  },
-  {
-    title: "Boletas y sus respectivas notas de crédito y debito",
-    pathImg: "boletas.png",
-  },
-  {
-    title: "Resumen diario de boletas de venta",
-    pathImg: "resumen-de-boletas.png",
-  },
-  {
-    title: "Comunicación de Baja",
-    pathImg: "comunicacion-baja.png",
-  },
-];
-
 const Empresa = () => {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>

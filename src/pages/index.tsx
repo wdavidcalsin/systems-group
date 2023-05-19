@@ -23,6 +23,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
+import Link from "next/link";
 
 const settings = {
   dots: true,
@@ -147,7 +148,9 @@ export default function Home() {
               nuestro equipo profesional en Tecnologías de la Información.
             </Text>
             <Box>
-              <Button>Contactenos</Button>
+              <Button as={Link} href="/contactenos">
+                Contactenos
+              </Button>
             </Box>
           </Flex>
           <Flex flex={1} justify={"center"}>
