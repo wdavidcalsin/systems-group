@@ -423,7 +423,7 @@ function Navbar() {
 
       <div className="hidden lg:block">
         <div className="uppercase flex text-white">
-          <Link href="#" className="bg-[#0072CE] p-4">
+          <Link href="/soporte" className="bg-[#0072CE] p-4">
             soporte
           </Link>
           <Link href="/empresa" className="bg-[#F1C400] p-4 text-black">
