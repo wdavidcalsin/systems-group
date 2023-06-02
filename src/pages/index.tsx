@@ -24,6 +24,11 @@ import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
 import Link from "next/link";
+import { getAllPosts } from "@/lib/post";
+import { gql } from "@apollo/client";
+import { client } from "@/lib/apollo-client";
+import ReactHtmlParser from "react-html-parser";
+import { splitTitle } from "@/utils";
 
 const settings = {
   dots: true,
@@ -39,7 +44,24 @@ const settings = {
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+interface Page {
+  __typename: string;
+  title: string;
+  slug: string;
+  content: string;
+}
+
+interface ICustomPage {
+  __typename: string;
+  title: {
+    firstTitle: string;
+    secondTitle: string;
+  };
+  slug: string;
+  content: string;
+}
+
+export default function Home({ page }: { page: ICustomPage }) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
@@ -92,6 +114,8 @@ export default function Home() {
 
   const containerRef = useRef(null);
 
+  // const parsedContent = ReactHtmlParser(filteredPages?.content as string);
+
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -134,18 +158,19 @@ export default function Home() {
           <Flex flex={1} direction={"column"} gap={5}>
             <Box>
               <Text fontSize={"lg"} fontWeight={"light"}>
-                Bienvenido a
+                {/* Bienvenido a */}
+                {page.title.firstTitle}
               </Text>
               <Text
                 fontSize={["5xl", "5xl", "5xl", "5xl", "7xl", "7xl"]}
                 fontFamily={"serif"}
               >
-                Grupo Sistemas
+                {page.title.secondTitle}
+                {/* Grupo Sistemas */}
               </Text>
             </Box>
             <Text fontSize={"lg"} fontWeight={"light"}>
-              Nos encargamos de que tu proyecto se haga realidad gracias a
-              nuestro equipo profesional en Tecnologías de la Información.
+              {page.content}
             </Text>
             <Box>
               <Button as={Link} href="/contactenos">
@@ -271,8 +296,6 @@ export default function Home() {
         </Flex>
         <Flex
           gap={["10", "10", "0"]}
-          // bgColor={"red"}
-          // flexWrap="wrap"
           justifyContent={"center"}
           alignItems="center"
           flexDirection={["column", "column", "row"]}
@@ -589,3 +612,34 @@ export default function Home() {
     </main>
   );
 }
+
+Home.getInitialProps = async () => {
+  const GET_PAGES = gql`
+    query GetAllPages {
+      pages {
+        nodes {
+          title
+          slug
+          content
+        }
+      }
+    }
+  `;
+
+  const response = await client.query({
+    query: GET_PAGES,
+    variables: { slug: "home" },
+  });
+
+  const pages = response?.data?.pages?.nodes as Page[];
+  const filteredPages = pages.find((page) => page.slug === "home");
+
+  const page = {
+    ...filteredPages,
+    title: splitTitle(filteredPages?.title as string),
+  };
+
+  return {
+    page,
+  };
+};
