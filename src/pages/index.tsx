@@ -27,8 +27,8 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/post";
 import { gql } from "@apollo/client";
 import { client } from "@/lib/apollo-client";
-import ReactHtmlParser from "react-html-parser";
 import { splitTitle } from "@/utils";
+import HTMLReactParser from "html-react-parser";
 
 const settings = {
   dots: true,
@@ -169,9 +169,18 @@ export default function Home({ page }: { page: ICustomPage }) {
                 {/* Grupo Sistemas */}
               </Text>
             </Box>
-            <Text fontSize={"lg"} fontWeight={"light"}>
-              {page.content}
-            </Text>
+            {/* <Text fontSize={"lg"} fontWeight={"light"}> */}
+            {/* {page.content} */}
+            {/* {HTMLReactParser(page.content)} */}
+            {/* </Text> */}
+            {/* <p dangerouslySetInnerHTML={{ __html: page.content }}></p> */}
+            <Text
+              as={"div"}
+              dangerouslySetInnerHTML={{ __html: page.content }}
+              fontSize={"lg"}
+              fontWeight={"light"}
+            ></Text>
+            {/* <div  dangerouslySetInnerHTML={{ __html: page.content }} /> */}
             <Box>
               <Button as={Link} href="/contactenos">
                 Contactenos
@@ -613,7 +622,7 @@ export default function Home({ page }: { page: ICustomPage }) {
   );
 }
 
-Home.getInitialProps = async () => {
+export async function getStaticProps() {
   const GET_PAGES = gql`
     query GetAllPages {
       pages {
@@ -640,6 +649,8 @@ Home.getInitialProps = async () => {
   };
 
   return {
-    page,
+    props: {
+      page,
+    },
   };
-};
+}
