@@ -61,7 +61,7 @@ export default function MediosDeComunicacion() {
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
           {listMediosDeComunicacion.map((medio, index) => (
             <Card
-              maxW="sm"
+              maxW="xs"
               key={index}
               bgColor="white"
               color={"#353E44"}

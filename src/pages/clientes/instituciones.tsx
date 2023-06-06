@@ -11,6 +11,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { gql } from "@apollo/client";
+import { client } from "@/lib/apollo-client";
+import { IPost } from "@/types";
+import { GET_POSTS } from "@/lib";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -57,7 +61,7 @@ const listInstituciones = [
   },
 ];
 
-export default function Instituciones() {
+export default function Instituciones({ posts }: { posts: IPost[] }) {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -84,7 +88,7 @@ export default function Instituciones() {
           </Text>
         </Flex>
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
-          {listInstituciones.map((hotel, index) => (
+          {/* {listInstituciones.map((hotel, index) => (
             <Card
               maxW="sm"
               key={index}
@@ -111,9 +115,56 @@ export default function Instituciones() {
                 </Stack>
               </CardBody>
             </Card>
+          ))} */}
+          {posts.map((institucion, index) => (
+            <Card
+              maxW="xs"
+              key={index}
+              bgColor="white"
+              color={"#353E44"}
+              shadow="base"
+              rounded={"2xl"}
+              transition="all .25s ease"
+              _hover={{
+                transform: "scale(1.01)",
+                shadow: "xl",
+              }}
+            >
+              <CardBody>
+                <Image
+                  width={"100%"}
+                  // src={`/img-page-instituciones/instituto-de-las-culturas-andinas.png`}
+                  src={
+                    institucion.featuredImage === null
+                      ? "/img-page-instituciones/instituto-de-las-culturas-andinas.png"
+                      : institucion.featuredImage.node.sourceUrl
+                  }
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md">{institucion.title}</Heading>
+                  <Text fontWeight={"light"}>Institutions</Text>
+                </Stack>
+              </CardBody>
+            </Card>
           ))}
         </Flex>
       </Box>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  const response = await client.query({
+    query: GET_POSTS,
+    variables: { categoryName: "Instituciones" },
+  });
+
+  const posts = response?.data?.posts?.nodes as IPost[];
+  return {
+    props: {
+      posts,
+    },
+  };
 }

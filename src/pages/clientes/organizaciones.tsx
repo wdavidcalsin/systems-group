@@ -71,7 +71,7 @@ export default function Organizaciones() {
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
           {listMediosDeComunicacion.map((organizacion, index) => (
             <Card
-              maxW="sm"
+              maxW="xs"
               key={index}
               bgColor="white"
               color={"#353E44"}

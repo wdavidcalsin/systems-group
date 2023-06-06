@@ -66,7 +66,7 @@ export default function Restaurantes() {
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
           {listRestaurants.map((restaurante, index) => (
             <Card
-              maxW="sm"
+              maxW="xs"
               key={index}
               bgColor="white"
               color={"#353E44"}

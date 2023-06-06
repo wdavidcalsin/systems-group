@@ -1,3 +1,7 @@
+import { GET_POSTS } from "@/lib";
+import { client } from "@/lib/apollo-client";
+import { IPost } from "@/types";
+import { gql } from "@apollo/client";
 import {
   Box,
   Card,
@@ -55,7 +59,7 @@ const listClients = [
   },
 ];
 
-export default function AgenciaDeViajes() {
+export default function AgenciaDeViajes({ posts }: { posts: IPost[] }) {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -82,9 +86,9 @@ export default function AgenciaDeViajes() {
           </Text>
         </Flex>
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
-          {listClients.map((client, index) => (
+          {/* {listClients.map((client, index) => (
             <Card
-              maxW="sm"
+            maxW="sm"
               key={index}
               bgColor="white"
               color={"#353E44"}
@@ -104,14 +108,68 @@ export default function AgenciaDeViajes() {
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
+                <Heading size="md">{client.title}</Heading>
+                <Text fontWeight={"light"}>{client.description}</Text>
+                </Stack>
+                </CardBody>
+                </Card>
+              ))} */}
+          {posts.map((client, index) => (
+            <Card
+              maxW="xs"
+              key={index}
+              bgColor="white"
+              color={"#353E44"}
+              shadow="base"
+              rounded={"2xl"}
+              transition="all .25s ease"
+              _hover={{
+                transform: "scale(1.01)",
+                shadow: "xl",
+              }}
+            >
+              <CardBody>
+                <Image
+                  width={"100%"}
+                  // src={`/img-page-clients/horizonte-del-titicaca.png`}
+                  src={
+                    client.featuredImage === null
+                      ? "/img-page-clients/horizonte-del-titicaca.png"
+                      : client.featuredImage.node.sourceUrl
+                  }
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
                   <Heading size="md">{client.title}</Heading>
-                  <Text fontWeight={"light"}>{client.description}</Text>
+                  <Text fontWeight={"light"}>Tour Agency</Text>
                 </Stack>
               </CardBody>
             </Card>
           ))}
+          {/* {posts.map((client, index) => (
+            <div
+              key={index}
+              dangerouslySetInnerHTML={{ __html: client.title }}
+              className="text-black"
+            ></div>
+          ))} */}
         </Flex>
       </Box>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  const response = await client.query({
+    query: GET_POSTS,
+    variables: { categoryName: "Agencias de viaje" },
+  });
+
+  const posts = response?.data?.posts?.nodes as IPost[];
+  return {
+    props: {
+      posts,
+    },
+  };
 }
