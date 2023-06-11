@@ -11,6 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { GET_POSTS, client } from "@/lib";
+import { IPost } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +44,7 @@ const listMediosDeComunicacion = [
   },
 ];
 
-export default function Organizaciones() {
+export default function Organizaciones({ posts }: { posts: IPost[] }) {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -69,7 +71,7 @@ export default function Organizaciones() {
           </Text>
         </Flex>
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
-          {listMediosDeComunicacion.map((organizacion, index) => (
+          {posts.map((organizacion, index) => (
             <Card
               maxW="xs"
               key={index}
@@ -86,13 +88,18 @@ export default function Organizaciones() {
               <CardBody>
                 <Image
                   width={"100%"}
-                  src={`/img-page-organizaciones/${organizacion.path}`}
+                  // src={`/img-page-organizaciones/${organizacion.path}`}
+                  src={
+                    organizacion.featuredImage === null
+                      ? "/img-page-organizaciones/sumamarka.jpg"
+                      : organizacion.featuredImage.node.sourceUrl
+                  }
                   alt="Green double couch with wooden legs"
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
                   <Heading size="md">{organizacion.title}</Heading>
-                  <Text fontWeight={"light"}>{organizacion.description}</Text>
+                  <Text fontWeight={"light"}>Institucion</Text>
                 </Stack>
               </CardBody>
             </Card>
@@ -101,4 +108,18 @@ export default function Organizaciones() {
       </Box>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  const response = await client.query({
+    query: GET_POSTS,
+    variables: { categoryName: "Organizaciones" },
+  });
+
+  const posts = response?.data?.posts?.nodes as IPost[];
+  return {
+    props: {
+      posts,
+    },
+  };
 }

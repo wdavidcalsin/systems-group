@@ -11,6 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { GET_POSTS, client } from "@/lib";
+import { IPost } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,7 +39,7 @@ const listRestaurants = [
   },
 ];
 
-export default function Restaurantes() {
+export default function Restaurantes({ posts }: { posts: IPost[] }) {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -64,7 +66,7 @@ export default function Restaurantes() {
           </Text>
         </Flex>
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
-          {listRestaurants.map((restaurante, index) => (
+          {posts.map((restaurante, index) => (
             <Card
               maxW="xs"
               key={index}
@@ -81,13 +83,18 @@ export default function Restaurantes() {
               <CardBody>
                 <Image
                   width={"100%"}
-                  src={`/img-page-restaurants/${restaurante.path}`}
+                  // src={`/img-page-restaurants/${restaurante.path}`}
+                  src={
+                    restaurante.featuredImage === null
+                      ? "/img-page-restaurants/la-casona.jpg"
+                      : restaurante.featuredImage.node.sourceUrl
+                  }
                   alt="Green double couch with wooden legs"
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
                   <Heading size="md">{restaurante.title}</Heading>
-                  <Text fontWeight={"light"}>{restaurante.description}</Text>
+                  <Text fontWeight={"light"}>Restaurant</Text>
                 </Stack>
               </CardBody>
             </Card>
@@ -96,4 +103,18 @@ export default function Restaurantes() {
       </Box>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  const response = await client.query({
+    query: GET_POSTS,
+    variables: { categoryName: "Restaurantes" },
+  });
+
+  const posts = response?.data?.posts?.nodes as IPost[];
+  return {
+    props: {
+      posts,
+    },
+  };
 }

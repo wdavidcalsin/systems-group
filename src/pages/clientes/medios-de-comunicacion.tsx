@@ -11,6 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { GET_POSTS, client } from "@/lib";
+import { IPost } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +34,7 @@ const listMediosDeComunicacion = [
   },
 ];
 
-export default function MediosDeComunicacion() {
+export default function MediosDeComunicacion({ posts }: { posts: IPost[] }) {
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -59,7 +61,7 @@ export default function MediosDeComunicacion() {
           </Text>
         </Flex>
         <Flex gap={10} wrap="wrap" justifyContent={"center"}>
-          {listMediosDeComunicacion.map((medio, index) => (
+          {/* {listMediosDeComunicacion.map((medio, index) => (
             <Card
               maxW="xs"
               key={index}
@@ -86,9 +88,56 @@ export default function MediosDeComunicacion() {
                 </Stack>
               </CardBody>
             </Card>
+          ))} */}
+          {posts.map((medio, index) => (
+            <Card
+              maxW="xs"
+              key={index}
+              bgColor="white"
+              color={"#353E44"}
+              shadow="base"
+              rounded={"2xl"}
+              transition="all .25s ease"
+              _hover={{
+                transform: "scale(1.01)",
+                shadow: "xl",
+              }}
+            >
+              <CardBody>
+                <Image
+                  width={"100%"}
+                  // src={`/img-page-medios-de-comunicacion/${medio.path}`}
+                  src={
+                    medio.featuredImage === null
+                      ? "/img-page-medios-de-comunicacion/radio-altura.jpg"
+                      : medio.featuredImage.node.sourceUrl
+                  }
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md">{medio.title}</Heading>
+                  <Text fontWeight={"light"}>Medio</Text>
+                </Stack>
+              </CardBody>
+            </Card>
           ))}
         </Flex>
       </Box>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  const response = await client.query({
+    query: GET_POSTS,
+    variables: { categoryName: "Medios de comunicacion" },
+  });
+
+  const posts = response?.data?.posts?.nodes as IPost[];
+  return {
+    props: {
+      posts,
+    },
+  };
 }
