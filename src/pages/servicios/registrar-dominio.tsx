@@ -309,6 +309,7 @@ const RegistrarDominio = () => {
                               opacity: "2",
                               bgColor: "rgba(0,0,0,.02)",
                             }}
+                            border={"none"}
                           >
                             <Td fontWeight="bold">Name:</Td>
                             <Td> {getWhoIs.whoIs["Registrant Name"]}</Td>
