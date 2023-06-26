@@ -209,31 +209,60 @@ const RegistrarDominio = () => {
                 </Text>
               </Flex>
             ) : domain.domain === "" ? null : domain && domain.available ? (
-              <Flex direction="column" alignItems="center" gap={5} as="div">
-                <Text as="b" fontSize="2xl">
-                  Domain
-                </Text>
-                <Flex gap={5}>
-                  <Text fontSize={["xl", "xl"]} as="b">
-                    Disponible
-                  </Text>
-                  <Text fontSize={["xl", "xl"]} as="i">
-                    {domain.domain}
-                  </Text>
-                  <Text fontSize={["xl", "xl"]}>{domain.currency}</Text>
-                  <Text fontSize={["xl", "xl"]}>
-                    {domain.price / Math.pow(10, 6)}
-                  </Text>
-                </Flex>
-              </Flex>
-            ) : (
-              <Flex gap={10} alignItems="center" as="div">
-                <Text fontSize={["xl", "xl"]} as="b">
-                  No está disponible
-                </Text>
-                <Text fontSize={["xl", "xl"]} as="i">
+              <Flex
+                direction="row"
+                alignItems="center"
+                justifyContent={"space-between"}
+                gap={5}
+                as="div"
+                bgColor={"rgba(0,0,0,.22)"}
+                rounded={15}
+                width={["full", "xl", "xl"]}
+                py={8}
+                px={8}
+                // wrap={"wrap"}
+              >
+                <Text fontSize={["xl", "xl"]} fontWeight={"medium"}>
                   {domain.domain}
                 </Text>
+                <Text
+                  fontSize={["xl", "xl"]}
+                  color={"#8C8C8C"}
+                  fontWeight={"medium"}
+                >
+                  1st year sale
+                </Text>
+
+                <Text fontSize={["xl", "sm"]} fontWeight={"medium"}>
+                  S/. {Math.round((domain.price / Math.pow(10, 6)) * 3.63)}.00 /
+                  year
+                </Text>
+              </Flex>
+            ) : (
+              <Flex
+                direction="row"
+                alignItems="center"
+                justifyContent={"space-between"}
+                gap={5}
+                as="div"
+                bgColor={"rgba(0,0,0,.22)"}
+                rounded={15}
+                width={["full", "xl", "xl"]}
+                py={8}
+                px={8}
+                // wrap={"wrap"}
+              >
+                <Text fontSize={["xl", "xl"]} fontWeight={"medium"}>
+                  {domain.domain}
+                </Text>
+                <Text
+                  fontSize={["xl", "xl"]}
+                  color={"#8C8C8C"}
+                  fontWeight={"medium"}
+                >
+                  No está disponible
+                </Text>
+
                 <Button onClick={handleClickWhoIs}>Who is?</Button>
               </Flex>
             )}
@@ -261,9 +290,15 @@ const RegistrarDominio = () => {
                     >
                       {getWhoIs.isLoading ? (
                         <Tbody color={"white"}>
-                          <Flex alignItems={"center"} justifyContent={"center"}>
-                            <Spinner size="sm" />
-                          </Flex>
+                          <Tr>
+                            <Td
+                              display={"flex"}
+                              alignItems={"center"}
+                              justifyContent={"center"}
+                            >
+                              <Spinner size="sm" />
+                            </Td>
+                          </Tr>
                         </Tbody>
                       ) : (
                         <Tbody color={"white"}>
