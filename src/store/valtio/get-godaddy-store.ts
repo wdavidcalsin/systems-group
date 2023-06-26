@@ -11,12 +11,14 @@ interface GetDomainState {
 
 const getDomainState = proxy<GetDomainState>({
   domain: {
+    code: "",
     available: false,
     currency: "",
     definitive: false,
     domain: "",
     period: 0,
     price: 0,
+    message: "",
   },
   isLoading: false,
   inputDomain: "",
@@ -36,7 +38,7 @@ const setDomain = async () => {
   }
 
   const fetchDomain = await serviceGetDomainGodaddy(domainToFetch);
-  console.log(fetchDomain);
+  // console.log(fetchDomain);
 
   getDomainState.domain = fetchDomain;
   getDomainState.isLoading = false;

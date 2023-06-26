@@ -180,6 +180,11 @@ export default function Home() {
               fontSize={"lg"}
               fontWeight={"light"}
             ></Text> */}
+            <Text as={"div"} fontSize={"lg"} fontWeight={"light"}>
+              Nos encargamos de que tu proyecto se haga realidad gracias a
+              nuestro equipo profesional en Tecnologías de la Información.
+            </Text>
+
             {/* <div  dangerouslySetInnerHTML={{ __html: page.content }} /> */}
             <Box>
               <Button as={Link} href="/contactenos">

@@ -2,15 +2,16 @@ import whois from "whois";
 
 export default async function handler(req, res) {
   const { domain } = req.query;
-  console.log(domain);
+  // console.log(domain);
 
   try {
     const response = await new Promise((resolve, reject) => {
-      whois.lookup("peru.com", (err, data) => {
+      whois.lookup(domain, (err, data) => {
         if (err) {
           reject(err);
         } else {
           resolve(data);
+          console.log(domain);
         }
       });
     });

@@ -16,7 +16,7 @@ export const serviceGetWhoIs = async (domain: string) => {
 
   const response = await fetch(url, options);
   const result = (await response.json()) as IWhoIs;
-  console.log(result);
+  // console.log(result);
 
   return result;
 };

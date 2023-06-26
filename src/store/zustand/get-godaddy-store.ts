@@ -32,7 +32,7 @@ export const useGetDomain = create<GetDomainState>()(
         get().setIsLoading(true);
 
         const fetchDomain = await serviceGetDomainGodaddy(get().inputDomain);
-        console.log(fetchDomain);
+        // console.log(fetchDomain);
 
         set((state) => ({
           ...state,

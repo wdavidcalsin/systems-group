@@ -14,6 +14,7 @@ export interface IMyWhoIs {
   "Contact information available here": string;
   DNSSEC: string;
   "Domain Name": string;
+  "Domain Status": string;
   "For more information on Whois status codes, please visit https": string;
   "Name Server": string[];
   "Registrant City": string;
@@ -37,6 +38,7 @@ export interface IMyWhoIs {
   "Registry Domain ID": string;
   "Registry Registrant ID": string;
   "Registry Tech ID": string;
+  "Sponsoring Registrar": string;
   "Tech City": string;
   "Tech Country": string;
   "Tech Email": string;

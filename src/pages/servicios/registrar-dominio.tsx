@@ -37,7 +37,7 @@ import { serviceGetWhoIs } from "@/services";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const ReginstrarDominio = () => {
+const RegistrarDominio = () => {
   const { isLoading, setDomain, handleChangeInputDomain, domain, inputDomain } =
     useGetDomain();
   const getWhoIs = useGetWhoIs();
@@ -47,6 +47,12 @@ const ReginstrarDominio = () => {
   const handleClickWhoIs = () => {
     onOpen();
     getWhoIs.setWhoIs(domain.domain);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setDomain();
   };
 
   return (
@@ -144,9 +150,34 @@ const ReginstrarDominio = () => {
             gap={8}
           >
             <Text fontSize={["3xl", "4xl"]} as="b">
-              Busque su Nombre de Dominio
+              Busque su nombre de Dominio
             </Text>
-            <Flex gap={3} bgColor="#F6F6F6" p="3" rounded={"xl"} as="div">
+            <form onSubmit={handleSubmit}>
+              <Flex gap={3} bgColor="#F6F6F6" p="3" rounded={"xl"} as="div">
+                <Input
+                  placeholder="mysite"
+                  bgColor={"white"}
+                  color="black"
+                  roundedTopRight={0}
+                  roundedBottomRight={0}
+                  width="30rem"
+                  onChange={handleChangeInputDomain}
+                />
+                <Button
+                  type="submit" // Cambiar el tipo de botón a "submit"
+                  bgColor={"#0EAC40"}
+                  variant="solid"
+                  fontSize={"1.5rem"}
+                  rounded="xl"
+                  _hover={{
+                    bgColor: "#0EAC40",
+                  }}
+                >
+                  {isLoading ? <Spinner size="sm" /> : <BiSearchAlt />}
+                </Button>
+              </Flex>
+            </form>
+            {/* <Flex gap={3} bgColor="#F6F6F6" p="3" rounded={"xl"} as="div">
               <Input
                 placeholder="mysite"
                 bgColor={"white"}
@@ -168,11 +199,16 @@ const ReginstrarDominio = () => {
                 }}
               >
                 {isLoading ? <Spinner size="sm" /> : <BiSearchAlt />}
-                {/* <BiSearchAlt /> */}
               </Button>
-            </Flex>
+            </Flex> */}
 
-            {domain.domain === "" ? null : domain && domain.available ? (
+            {domain.code === "UNSUPPORTED_TLD" ? (
+              <Flex direction="column" alignItems="center" gap={5} as="div">
+                <Text fontSize={["xl", "xl"]} as="b">
+                  TLD Invalid
+                </Text>
+              </Flex>
+            ) : domain.domain === "" ? null : domain && domain.available ? (
               <Flex direction="column" alignItems="center" gap={5} as="div">
                 <Text as="b" fontSize="2xl">
                   Domain
@@ -240,9 +276,9 @@ const ReginstrarDominio = () => {
                             }}
                           >
                             <Td fontWeight="bold">Name:</Td>
-                            <Td> {getWhoIs.whoIs.WhoisRecord.registrarName}</Td>
+                            <Td> {getWhoIs.whoIs["Registrant Name"]}</Td>
                           </Tr>
-                          <Tr
+                          {/* <Tr
                             transition={"all .3s"}
                             _hover={{
                               opacity: "2",
@@ -251,8 +287,8 @@ const ReginstrarDominio = () => {
                           >
                             <Td fontWeight="bold">Created Date:</Td>
                             <Td>{getWhoIs.whoIs.WhoisRecord.createdDate}</Td>
-                          </Tr>
-                          <Tr
+                          </Tr> */}
+                          {/* <Tr
                             transition={"all .3s"}
                             _hover={{
                               opacity: "2",
@@ -261,7 +297,7 @@ const ReginstrarDominio = () => {
                           >
                             <Td fontWeight="bold">Expires Date:</Td>
                             <Td>{getWhoIs.whoIs.WhoisRecord.expiresDate}</Td>
-                          </Tr>
+                          </Tr> */}
                           <Tr
                             transition={"all .3s"}
                             _hover={{
@@ -270,7 +306,39 @@ const ReginstrarDominio = () => {
                             }}
                           >
                             <Td fontWeight="bold">Contact email:</Td>
-                            <Td>{getWhoIs.whoIs.WhoisRecord.contactEmail}</Td>
+                            <Td>
+                              {getWhoIs.whoIs["Registrar Abuse Contact Email"]}
+                            </Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Admin Name:</Td>
+                            <Td>{getWhoIs.whoIs["Admin Name"]}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Admin Email:</Td>
+                            <Td>{getWhoIs.whoIs["Admin Email"]}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Sponsoring Registrar:</Td>
+                            <Td>{getWhoIs.whoIs["Sponsoring Registrar"]}</Td>
                           </Tr>
                           <Tr
                             transition={"all .3s"}
@@ -281,7 +349,7 @@ const ReginstrarDominio = () => {
                           >
                             <Td fontWeight="bold">Registros DNS:</Td>
                             <Td display={"flex"} flexDirection={"column"}>
-                              {getWhoIs.whoIs.WhoisRecord.nameServers.hostNames.map(
+                              {getWhoIs.whoIs["Name Server"].map(
                                 (hostName, index) => (
                                   <span key={index}>{hostName}</span>
                                 )
@@ -326,4 +394,4 @@ const ReginstrarDominio = () => {
   );
 };
 
-export default ReginstrarDominio;
+export default RegistrarDominio;

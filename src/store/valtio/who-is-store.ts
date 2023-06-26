@@ -6,14 +6,14 @@ import { proxy, useSnapshot } from "valtio";
 import { devtools } from "valtio/utils";
 
 interface GetWhoIsState {
-  whoIs: IWhoIs;
-  // whoIs: IMyWhoIs;
+  // whoIs: IWhoIs;
+  whoIs: IMyWhoIs;
   isLoading: boolean;
 }
 
 const getWhoIsState = proxy<GetWhoIsState>({
-  whoIs: initialWhoIs,
-  // whoIs: initialMyWhoIs,
+  // whoIs: initialWhoIs,
+  whoIs: initialMyWhoIs,
   isLoading: false,
 });
 
@@ -25,9 +25,9 @@ const getWhoIsStateDevTools = devtools(getWhoIsState, {
 const setWhoIs = async (domain: string) => {
   getWhoIsState.isLoading = true;
 
-  const fetchWhoIs = await serviceGetWhoIs(domain);
-  // const fetchWhoIs = await serviceGetMyWhoIs(domain);
-  console.log(fetchWhoIs);
+  // const fetchWhoIs = await serviceGetWhoIs(domain);
+  const fetchWhoIs = await serviceGetMyWhoIs(domain);
+  // console.log(fetchWhoIs);
 
   getWhoIsState.whoIs = fetchWhoIs;
   getWhoIsState.isLoading = false;
