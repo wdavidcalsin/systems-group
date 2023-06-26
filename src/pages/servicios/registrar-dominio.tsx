@@ -349,10 +349,14 @@ const RegistrarDominio = () => {
                           >
                             <Td fontWeight="bold">Registros DNS:</Td>
                             <Td display={"flex"} flexDirection={"column"}>
-                              {getWhoIs.whoIs["Name Server"].map(
-                                (hostName, index) => (
-                                  <span key={index}>{hostName}</span>
+                              {getWhoIs.whoIs["Name Server"] ? (
+                                getWhoIs.whoIs["Name Server"].map(
+                                  (hostName, index) => (
+                                    <span key={index}>{hostName}</span>
+                                  )
                                 )
+                              ) : (
+                                <span>Not Found</span>
                               )}
                             </Td>
                           </Tr>
