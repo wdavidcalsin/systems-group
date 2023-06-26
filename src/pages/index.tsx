@@ -61,7 +61,8 @@ interface ICustomPage {
   content: string;
 }
 
-export default function Home({ page }: { page: ICustomPage }) {
+// export default function Home({ page }: { page: ICustomPage }) {
+export default function Home() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
@@ -158,15 +159,14 @@ export default function Home({ page }: { page: ICustomPage }) {
           <Flex flex={1} direction={"column"} gap={5}>
             <Box>
               <Text fontSize={"lg"} fontWeight={"light"}>
-                {/* Bienvenido a */}
-                {page.title.firstTitle}
+                Bienvenido a{/* {page.title.firstTitle} */}
               </Text>
               <Text
                 fontSize={["5xl", "5xl", "5xl", "5xl", "7xl", "7xl"]}
                 fontFamily={"serif"}
               >
-                {page.title.secondTitle}
-                {/* Grupo Sistemas */}
+                {/* {page.title.secondTitle} */}
+                Grupo Sistemas
               </Text>
             </Box>
             {/* <Text fontSize={"lg"} fontWeight={"light"}> */}
@@ -174,12 +174,12 @@ export default function Home({ page }: { page: ICustomPage }) {
             {/* {HTMLReactParser(page.content)} */}
             {/* </Text> */}
             {/* <p dangerouslySetInnerHTML={{ __html: page.content }}></p> */}
-            <Text
+            {/* <Text
               as={"div"}
               dangerouslySetInnerHTML={{ __html: page.content }}
               fontSize={"lg"}
               fontWeight={"light"}
-            ></Text>
+            ></Text> */}
             {/* <div  dangerouslySetInnerHTML={{ __html: page.content }} /> */}
             <Box>
               <Button as={Link} href="/contactenos">
@@ -622,35 +622,35 @@ export default function Home({ page }: { page: ICustomPage }) {
   );
 }
 
-export async function getStaticProps() {
-  const GET_PAGES = gql`
-    query GetAllPages {
-      pages {
-        nodes {
-          title
-          slug
-          content
-        }
-      }
-    }
-  `;
+// export async function getStaticProps() {
+//   const GET_PAGES = gql`
+//     query GetAllPages {
+//       pages {
+//         nodes {
+//           title
+//           slug
+//           content
+//         }
+//       }
+//     }
+//   `;
 
-  const response = await client.query({
-    query: GET_PAGES,
-    variables: { slug: "home" },
-  });
+//   const response = await client.query({
+//     query: GET_PAGES,
+//     variables: { slug: "home" },
+//   });
 
-  const pages = response?.data?.pages?.nodes as Page[];
-  const filteredPages = pages.find((page) => page.slug === "home");
+//   const pages = response?.data?.pages?.nodes as Page[];
+//   const filteredPages = pages.find((page) => page.slug === "home");
 
-  const page = {
-    ...filteredPages,
-    title: splitTitle(filteredPages?.title as string),
-  };
+//   const page = {
+//     ...filteredPages,
+//     title: splitTitle(filteredPages?.title as string),
+//   };
 
-  return {
-    props: {
-      page,
-    },
-  };
-}
+//   return {
+//     props: {
+//       page,
+//     },
+//   };
+// }

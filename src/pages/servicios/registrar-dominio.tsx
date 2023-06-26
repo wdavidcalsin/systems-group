@@ -5,10 +5,19 @@ import {
   Button,
   Flex,
   Grid,
+  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
   InputRightAddon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
   Stack,
   Table,
   TableCaption,
@@ -20,12 +29,26 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BiSearchAlt } from "react-icons/bi";
+import { useGetDomain, useGetWhoIs } from "@/store";
+import { serviceGetWhoIs } from "@/services";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const ReginstrarDominio = () => {
+  const { isLoading, setDomain, handleChangeInputDomain, domain, inputDomain } =
+    useGetDomain();
+  const getWhoIs = useGetWhoIs();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleClickWhoIs = () => {
+    onOpen();
+    getWhoIs.setWhoIs(domain.domain);
+  };
+
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -36,8 +59,13 @@ const ReginstrarDominio = () => {
         px={"5"}
         bg={"white"}
         color={"white"}
+        as="div"
       >
-        <Flex width={"5xl"} direction="column" gap={10}>
+        <Flex
+          width={["100%", "100%", "100%", "100%", "5xl"]}
+          direction="column"
+          gap={10}
+        >
           <Flex
             direction={"column"}
             alignItems="center"
@@ -59,8 +87,12 @@ const ReginstrarDominio = () => {
             width={"100%"}
             gap="20"
             borderColor="#C2C2C2"
+            overflow={"auto"}
+            // bgColor={"red"}
           >
             <Table
+              overflow={"auto"}
+              // bgColor={"blue"}
               variant="simple"
               size={"lg"}
               colorScheme="twitter"
@@ -93,7 +125,6 @@ const ReginstrarDominio = () => {
                 <Tr
                   transition={"all .3s"}
                   _hover={{
-                    // transform: "scale(1.001)",
                     opacity: "2",
                     bgColor: "rgba(0,0,0,.02)",
                   }}
@@ -115,7 +146,7 @@ const ReginstrarDominio = () => {
             <Text fontSize={["3xl", "4xl"]} as="b">
               Busque su Nombre de Dominio
             </Text>
-            <Flex gap={3} bgColor="#F6F6F6" p="3" rounded={"xl"}>
+            <Flex gap={3} bgColor="#F6F6F6" p="3" rounded={"xl"} as="div">
               <Input
                 placeholder="mysite"
                 bgColor={"white"}
@@ -123,17 +154,171 @@ const ReginstrarDominio = () => {
                 roundedTopRight={0}
                 roundedBottomRight={0}
                 width="30rem"
+                onChange={handleChangeInputDomain}
               />
               <Button
-                // colorScheme="green"
                 bgColor={"#0EAC40"}
                 variant="solid"
                 fontSize={"1.5rem"}
                 rounded="xl"
+                onClick={setDomain}
+                type="button"
+                _hover={{
+                  bgColor: "#0EAC40",
+                }}
               >
-                <BiSearchAlt />
+                {isLoading ? <Spinner size="sm" /> : <BiSearchAlt />}
+                {/* <BiSearchAlt /> */}
               </Button>
             </Flex>
+
+            {domain.domain === "" ? null : domain && domain.available ? (
+              <Flex direction="column" alignItems="center" gap={5} as="div">
+                <Text as="b" fontSize="2xl">
+                  Domain
+                </Text>
+                <Flex gap={5}>
+                  <Text fontSize={["xl", "xl"]} as="b">
+                    Disponible
+                  </Text>
+                  <Text fontSize={["xl", "xl"]} as="i">
+                    {domain.domain}
+                  </Text>
+                  <Text fontSize={["xl", "xl"]}>{domain.currency}</Text>
+                  <Text fontSize={["xl", "xl"]}>
+                    {domain.price / Math.pow(10, 6)}
+                  </Text>
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex gap={10} alignItems="center" as="div">
+                <Text fontSize={["xl", "xl"]} as="b">
+                  No está disponible
+                </Text>
+                <Text fontSize={["xl", "xl"]} as="i">
+                  {domain.domain}
+                </Text>
+                <Button onClick={handleClickWhoIs}>Who is?</Button>
+              </Flex>
+            )}
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader color={"#3679FB"}> {inputDomain}</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <TableContainer
+                    color="#353E44"
+                    width={"100%"}
+                    gap="20"
+                    borderColor="#C2C2C2"
+                    overflow={"auto"}
+                  >
+                    <Table
+                      overflow={"auto"}
+                      // bgColor={"blue"}
+                      variant="simple"
+                      size={"lg"}
+                      colorScheme="twitter"
+                      borderColor="#051C2C"
+                    >
+                      {getWhoIs.isLoading ? (
+                        <Tbody color={"white"}>
+                          <Flex alignItems={"center"} justifyContent={"center"}>
+                            <Spinner size="sm" />
+                          </Flex>
+                        </Tbody>
+                      ) : (
+                        <Tbody color={"white"}>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              // transform: "scale(1.01)",
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Name:</Td>
+                            <Td> {getWhoIs.whoIs.WhoisRecord.registrarName}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Created Date:</Td>
+                            <Td>{getWhoIs.whoIs.WhoisRecord.createdDate}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Expires Date:</Td>
+                            <Td>{getWhoIs.whoIs.WhoisRecord.expiresDate}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Contact email:</Td>
+                            <Td>{getWhoIs.whoIs.WhoisRecord.contactEmail}</Td>
+                          </Tr>
+                          <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Registros DNS:</Td>
+                            <Td display={"flex"} flexDirection={"column"}>
+                              {getWhoIs.whoIs.WhoisRecord.nameServers.hostNames.map(
+                                (hostName, index) => (
+                                  <span key={index}>{hostName}</span>
+                                )
+                              )}
+                            </Td>
+                          </Tr>
+                          {/* <Tr
+                            transition={"all .3s"}
+                            _hover={{
+                              opacity: "2",
+                              bgColor: "rgba(0,0,0,.02)",
+                            }}
+                          >
+                            <Td fontWeight="bold">Estimated Domain Age:</Td>
+                            {getWhoIs.whoIs.WhoisRecord.estimatedDomainAge ? (
+                              <Td>
+                                {getWhoIs.whoIs.WhoisRecord.estimatedDomainAge}{" "}
+                                day
+                              </Td>
+                            ) : (
+                              <Td>Null</Td>
+                            )}
+                          </Tr> */}
+                        </Tbody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  {/* <Button variant="ghost">Secondary Action</Button> */}
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Grid>
         </Flex>
       </Box>
