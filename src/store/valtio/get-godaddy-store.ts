@@ -32,6 +32,9 @@ const getDomainStateDevTools = devtools(getDomainState, {
 const setDomain = async () => {
   getDomainState.isLoading = true;
   let domainToFetch = getDomainState.inputDomain;
+  if (domainToFetch.endsWith(".")) {
+    domainToFetch = domainToFetch.slice(0, -1);
+  }
 
   if (!/\.[A-Za-z]+$/.test(domainToFetch)) {
     domainToFetch += ".com";

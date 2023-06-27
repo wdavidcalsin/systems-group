@@ -234,8 +234,11 @@ const RegistrarDominio = () => {
                 </Text>
 
                 <Text fontSize={["xl", "sm"]} fontWeight={"medium"}>
-                  S/. {Math.round((domain.price / Math.pow(10, 6)) * 3.63)}.00 /
-                  year
+                  S/.
+                  {domain.currency === "SOL"
+                    ? domain.price
+                    : Math.round((domain.price / Math.pow(10, 6)) * 3.63)}
+                  .00 /year
                 </Text>
               </Flex>
             ) : (
@@ -279,6 +282,13 @@ const RegistrarDominio = () => {
                     gap="20"
                     borderColor="#C2C2C2"
                     overflow={"auto"}
+                    // bgColor={"red"}
+                    css={{
+                      "&::-webkit-scrollbar": {
+                        width: 0,
+                        color: "transparent transparent",
+                      },
+                    }}
                   >
                     <Table
                       overflow={"auto"}
@@ -420,9 +430,9 @@ const RegistrarDominio = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
                     Close
-                  </Button>
+                  </Button> */}
                   {/* <Button variant="ghost">Secondary Action</Button> */}
                 </ModalFooter>
               </ModalContent>
