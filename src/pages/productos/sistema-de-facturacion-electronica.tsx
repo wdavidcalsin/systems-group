@@ -1,7 +1,28 @@
+import * as React from "react";
+import { client } from "@/lib";
+import { gql, parser } from "@apollo/client";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { html2json } from "html2json";
 import { Inter } from "next/font/google";
+import htmlReactParser, {
+  DOMNode,
+  Element,
+  domToReact,
+} from "html-react-parser";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface Page {
+  id: string;
+  title: string;
+  content: string;
+}
+interface Node {
+  node: string;
+  tag?: string;
+  child?: Node[];
+  text?: string;
+}
 
 const typesFirmaDigital = [
   {
@@ -26,9 +47,75 @@ const typesFirmaDigital = [
   },
 ];
 
-const SistemaDeFacturacionElectronica = () => {
+// const renderNode = (node: Node): JSX.Element => {
+//   if (node.node === "element") {
+//     return React.createElement(node.tag!, null, node.child?.map(renderNode));
+//   } else if (node.node === "text") {
+//     return <>{node.text}</>;
+//   }
+//   throw new Error(`Invalid node type: ${node.node}`);
+// };
+
+const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
+  const replaceListItem = (domNode: DOMNode) => {
+    if (domNode instanceof Element && domNode.tagName === "li") {
+      return (
+        <Flex
+          key={Math.random().toString()} // Provide a unique key for each list item
+          gap="5"
+          color="black"
+          alignItems="center"
+          justifyContent="center"
+          w="60"
+          border="1px solid"
+          borderColor="#3679FB"
+          rounded="lg"
+          padding="1rem"
+          shadow="0 -8px 0 0 #3679FB"
+          transition="all .2s"
+          _hover={{
+            transform: "scale(1.05)",
+          }}
+          fontSize="small"
+          fontWeight="bold"
+        >
+          {domToReact(domNode.children)}
+        </Flex>
+      );
+    }
+  };
+
+  const contentParser = htmlReactParser(page.content, {
+    replace: (domNode: DOMNode) => {
+      if (domNode instanceof Element) {
+        if (domNode.tagName === "p") {
+          return (
+            <Text fontSize={["md", "md"]} fontWeight="light" as={"p"}>
+              {domToReact(domNode.children)}
+            </Text>
+          );
+        } else if (domNode.tagName === "ul") {
+          return (
+            <Flex
+              gap={10}
+              columnGap={20}
+              py={14}
+              wrap="wrap"
+              justifyContent={"center"}
+            >
+              {domToReact(domNode.children, { replace: replaceListItem })}
+            </Flex>
+          );
+        }
+      }
+    },
+  });
+
+  // console.log(jsonHtml);
+  // const html = jsonHtml.child?.map(renderNode);
+
   return (
-    <main className={`min-h-screen ${inter.className} bg-white`}>
+    <main className={`min-h-screen  ${inter.className}  bg-white`}>
       <Box
         display={"grid"}
         placeItems="center"
@@ -36,7 +123,9 @@ const SistemaDeFacturacionElectronica = () => {
         py="20"
         px={"5"}
         bg={"white"}
-        color={"white"}
+        color={"black"}
+        // dangerouslySetInnerHTML={{ __html: page.content }}
+        as="div"
       >
         <Flex
           width={["100%", "100%", "100%", "100%", "5xl"]}
@@ -49,8 +138,37 @@ const SistemaDeFacturacionElectronica = () => {
             gap={"5"}
             color={"#353E44"}
           >
-            <Text fontSize={["3xl", "4xl"]} as="b">
-              Sistema de Facturacion Electronica
+            <Text
+              fontSize={["3xl", "4xl"]}
+              as="b"
+              fontFamily={"serif"}
+              textAlign={"center"}
+            >
+              {page.title}
+            </Text>
+            <Flex direction={"column"} gap="5">
+              {contentParser}
+            </Flex>
+          </Flex>
+        </Flex>
+        {/* <Flex
+          width={["100%", "100%", "100%", "100%", "5xl"]}
+          direction="column"
+          gap={20}
+        >
+          <Flex
+            direction={"column"}
+            alignItems="center"
+            gap={"5"}
+            color={"#353E44"}
+          >
+            <Text
+              fontSize={["3xl", "4xl"]}
+              as="b"
+              fontFamily={"serif"}
+              textAlign={"center"}
+            >
+              {page.title}
             </Text>
             <Flex direction={"column"} gap="5">
               <Text fontSize={["md", "md"]} fontWeight="light">
@@ -104,10 +222,36 @@ const SistemaDeFacturacionElectronica = () => {
             Empiece ahora mismo, y este al mismo nivel que las grandes empresas,
             ya que el futuro todo es electrónico.
           </Text>
-        </Flex>
+        </Flex> */}
       </Box>
     </main>
   );
 };
+
+export async function getStaticProps() {
+  const GET_PAGES = gql`
+    query GetPage {
+      pageBy(uri: "sistema-de-facturacion-electronica") {
+        id
+        title
+        content
+      }
+    }
+  `;
+
+  const response = await client.query({
+    query: GET_PAGES,
+    variables: { slug: "home" },
+  });
+
+  const page = response?.data?.pageBy as Page;
+  // console.log(page);
+
+  return {
+    props: {
+      page,
+    },
+  };
+}
 
 export default SistemaDeFacturacionElectronica;
