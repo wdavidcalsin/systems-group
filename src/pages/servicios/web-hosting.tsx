@@ -23,8 +23,21 @@ import {
 } from "@chakra-ui/react";
 import { BiSearchAlt } from "react-icons/bi";
 import { GiCheckMark } from "react-icons/gi";
+import { gql } from "@apollo/client";
+import { client } from "@/lib";
+import htmlReactParser, {
+  DOMNode,
+  Element,
+  domToReact,
+} from "html-react-parser";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface Page {
+  id: string;
+  title: string;
+  content: string;
+}
 
 const hostingServices = [
   {
@@ -125,7 +138,204 @@ const hostingServices = [
   },
 ];
 
-const WebHosting = () => {
+const WebHosting = ({ page }: { page: Page }) => {
+  const replaceListItem = (domNode: DOMNode) => {
+    if (domNode instanceof Element && domNode.tagName === "li") {
+      return (
+        <Flex
+          key={Math.random().toString()} // Provide a unique key for each list item
+          gap="5"
+          color="black"
+          alignItems="center"
+          justifyContent="center"
+          w="60"
+          border="1px solid"
+          borderColor="#3679FB"
+          rounded="lg"
+          padding="1rem"
+          shadow="0 -8px 0 0 #3679FB"
+          transition="all .2s"
+          _hover={{
+            transform: "scale(1.05)",
+          }}
+          fontSize="small"
+          fontWeight="bold"
+        >
+          {domToReact(domNode.children)}
+        </Flex>
+      );
+    }
+  };
+
+  const contentParser = htmlReactParser(page.content, {
+    replace: (domNode: DOMNode) => {
+      if (domNode instanceof Element) {
+        if (domNode.tagName === "p") {
+          const children = Array.isArray(domNode.children)
+            ? domNode.children
+            : [domNode.children];
+
+          const imgChild = children.find(
+            (child) => child instanceof Element && child.tagName === "img"
+          );
+
+          if (imgChild) {
+            return <></>;
+          }
+          return (
+            <Text fontSize={["md", "md"]} fontWeight="light" as={"p"}>
+              {domToReact(domNode.children)}
+            </Text>
+          );
+        } else if (domNode.type === "tag" && domNode.tagName === "img") {
+          return null;
+        } else if (domNode.tagName === "ul") {
+          return (
+            <Flex
+              gap={10}
+              columnGap={20}
+              py={14}
+              wrap="wrap"
+              justifyContent={"center"}
+            >
+              {domToReact(domNode.children, { replace: replaceListItem })}
+            </Flex>
+          );
+        } else if (domNode.tagName === "h2") {
+          return (
+            <Text fontSize={["3xl", "4xl"]} as="b">
+              {domToReact(domNode.children)}
+            </Text>
+          );
+        } else if (domNode.tagName === "table") {
+          return (
+            <TableContainer
+              color="#353E44"
+              width={"100%"}
+              gap="20"
+              borderColor="#C2C2C2"
+              py={10}
+            >
+              <Table
+                variant="simple"
+                size={"lg"}
+                colorScheme="twitter"
+                borderColor="#051C2C"
+              >
+                {domToReact(domNode.children, {
+                  replace: (domNode: DOMNode) => {
+                    if (
+                      domNode instanceof Element &&
+                      domNode.tagName === "thead"
+                    ) {
+                      return (
+                        <Thead bgColor={"#3679FB"}>
+                          {domToReact(domNode.children, {
+                            replace: (domNode: DOMNode) => {
+                              if (
+                                domNode instanceof Element &&
+                                domNode.tagName === "tr"
+                              ) {
+                                return (
+                                  <Tr>
+                                    {domToReact(domNode.children, {
+                                      replace: (domNode: DOMNode) => {
+                                        if (
+                                          domNode instanceof Element &&
+                                          domNode.tagName === "th"
+                                        ) {
+                                          return (
+                                            <Th color="white">
+                                              {domToReact(domNode.children)}
+                                            </Th>
+                                          );
+                                        }
+                                      },
+                                    })}
+                                  </Tr>
+                                );
+                              }
+                            },
+                          })}
+                        </Thead>
+                      );
+                    }
+                    if (
+                      domNode instanceof Element &&
+                      domNode.tagName === "tbody"
+                    ) {
+                      return (
+                        <Tbody>
+                          {domToReact(domNode.children, {
+                            replace: (domNode: DOMNode) => {
+                              if (
+                                domNode instanceof Element &&
+                                domNode.tagName === "tr"
+                              ) {
+                                return (
+                                  <Tr
+                                    transition={"all .3s"}
+                                    _hover={{
+                                      opacity: "2",
+                                      bgColor: "rgba(0,0,0,.02)",
+                                    }}
+                                  >
+                                    {domToReact(domNode.children, {
+                                      replace: (domNode: DOMNode) => {
+                                        if (
+                                          domNode instanceof Element &&
+                                          domNode.tagName === "td"
+                                        ) {
+                                          return (
+                                            <Td>
+                                              {domToReact(domNode.children, {
+                                                replace: (domNode: DOMNode) => {
+                                                  if (
+                                                    domNode instanceof
+                                                      Element &&
+                                                    domNode.tagName === "span"
+                                                  ) {
+                                                    if (
+                                                      domNode.attribs &&
+                                                      domNode.attribs.class ===
+                                                        "glyphicon glyphicon-ok"
+                                                    ) {
+                                                      return <GiCheckMark />;
+                                                    }
+                                                  }
+                                                },
+                                              })}
+                                            </Td>
+                                          );
+                                        }
+                                      },
+                                    })}
+                                  </Tr>
+                                );
+                              }
+                            },
+                          })}
+                        </Tbody>
+                      );
+                    }
+                  },
+                })}
+              </Table>
+            </TableContainer>
+          );
+        } else if (domNode.tagName === "thead") {
+          return (
+            <Thead bgColor={"#3679FB"}>
+              <Tr>{domToReact(domNode.children)}</Tr>
+            </Thead>
+          );
+        } else if (domNode.tagName === "th") {
+          return <Th color="white">{domToReact(domNode.children)}</Th>;
+        }
+      }
+    },
+  });
+
   return (
     <main className={`min-h-screen ${inter.className} bg-white`}>
       <Box
@@ -135,9 +345,19 @@ const WebHosting = () => {
         py="20"
         px={"5"}
         bg={"white"}
-        color={"white"}
+        color={"black"}
       >
         <Flex width={"6xl"} direction="column" gap={10}>
+          <Flex
+            direction={"column"}
+            alignItems="center"
+            gap={"5"}
+            color={"#353E44"}
+          >
+            {contentParser}
+          </Flex>
+        </Flex>
+        {/* <Flex width={"6xl"} direction="column" gap={10}>
           <Flex
             direction={"column"}
             alignItems="center"
@@ -285,10 +505,35 @@ const WebHosting = () => {
               </Tbody>
             </Table>
           </TableContainer>
-        </Flex>
+        </Flex> */}
       </Box>
     </main>
   );
 };
+
+export async function getStaticProps() {
+  const GET_PAGES = gql`
+    query GetPage {
+      pageBy(uri: "web-hosting-servidores") {
+        id
+        title
+        content
+      }
+    }
+  `;
+
+  const response = await client.query({
+    query: GET_PAGES,
+    variables: { slug: "home" },
+  });
+
+  const page = response?.data?.pageBy as Page;
+
+  return {
+    props: {
+      page,
+    },
+  };
+}
 
 export default WebHosting;

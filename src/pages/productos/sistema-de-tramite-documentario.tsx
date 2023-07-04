@@ -91,6 +91,29 @@ const SistemaDeTramiteDocumentario = ({ page }: { page: Page }) => {
     replace: (domNode: DOMNode) => {
       if (domNode instanceof Element) {
         if (domNode.tagName === "p") {
+          const children = Array.isArray(domNode.children)
+            ? domNode.children
+            : [domNode.children];
+
+          const imgChild = children.find(
+            (child) => child instanceof Element && child.tagName === "strong"
+          );
+
+          if (imgChild) {
+            return (
+              <Flex py={8} justifyContent={"left"}>
+                <Text
+                  fontSize={["xl", "xl"]}
+                  textAlign={"left"}
+                  // as="b"
+                  color={"#1192EE"}
+                >
+                  {domToReact(domNode.children, { replace: replaceListItem })}
+                </Text>
+              </Flex>
+            );
+          }
+
           return (
             <Text fontSize={["md", "md"]} fontWeight="light" as={"p"}>
               {domToReact(domNode.children)}

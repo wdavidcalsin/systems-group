@@ -9,6 +9,7 @@ import htmlReactParser, {
   Element,
   domToReact,
 } from "html-react-parser";
+import { CustomCarrousel } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,10 @@ interface Node {
   tag?: string;
   child?: Node[];
   text?: string;
+}
+
+interface IImageState {
+  img: string;
 }
 
 const typesFirmaDigital = [
@@ -57,6 +62,8 @@ const typesFirmaDigital = [
 // };
 
 const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
+  const [imageState, setImageState] = React.useState<IImageState[]>([]);
+
   const replaceListItem = (domNode: DOMNode) => {
     if (domNode instanceof Element && domNode.tagName === "li") {
       return (
@@ -89,11 +96,24 @@ const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
     replace: (domNode: DOMNode) => {
       if (domNode instanceof Element) {
         if (domNode.tagName === "p") {
+          const children = Array.isArray(domNode.children)
+            ? domNode.children
+            : [domNode.children];
+
+          const imgChild = children.find(
+            (child) => child instanceof Element && child.tagName === "img"
+          );
+
+          if (imgChild) {
+            return <></>;
+          }
           return (
             <Text fontSize={["md", "md"]} fontWeight="light" as={"p"}>
               {domToReact(domNode.children)}
             </Text>
           );
+        } else if (domNode.type === "tag" && domNode.tagName === "img") {
+          return null;
         } else if (domNode.tagName === "ul") {
           return (
             <Flex
@@ -111,8 +131,22 @@ const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
     },
   });
 
-  // console.log(jsonHtml);
-  // const html = jsonHtml.child?.map(renderNode);
+  React.useEffect(() => {
+    const images: string[] = [];
+
+    htmlReactParser(page.content, {
+      replace: (domNode: DOMNode) => {
+        if (domNode instanceof Element && domNode.tagName === "img") {
+          const { src } = domNode.attribs;
+          images.push(src);
+          return <></>; // Retorna un fragmento vacío para eliminar la imagen del contenido
+        }
+        return null;
+      },
+    });
+
+    setImageState((prev) => [...prev, ...images.map((img) => ({ img }))]);
+  }, [page.content]);
 
   return (
     <main className={`min-h-screen  ${inter.className}  bg-white`}>
@@ -124,7 +158,6 @@ const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
         px={"5"}
         bg={"white"}
         color={"black"}
-        // dangerouslySetInnerHTML={{ __html: page.content }}
         as="div"
       >
         <Flex
@@ -148,6 +181,21 @@ const SistemaDeFacturacionElectronica = ({ page }: { page: Page }) => {
             </Text>
             <Flex direction={"column"} gap="5">
               {contentParser}
+            </Flex>
+          </Flex>
+          <Flex
+            width={["100%", "100%", "100%", "100%", "5xl"]}
+            justifyContent={"center"}
+            // gap={20}
+          >
+            <Flex
+              gap={10}
+              columnGap={20}
+              justifyContent={"center"}
+              width={["100%", "100%", "100%", "100%", "2xl"]}
+              bgColor={"orange.600"}
+            >
+              <CustomCarrousel imageSlider={imageState} />
             </Flex>
           </Flex>
         </Flex>
@@ -245,7 +293,6 @@ export async function getStaticProps() {
   });
 
   const page = response?.data?.pageBy as Page;
-  // console.log(page);
 
   return {
     props: {

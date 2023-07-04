@@ -75,6 +75,18 @@ const SistemaDeGestionParaHoteles = ({ page }: { page: Page }) => {
     replace: (domNode: DOMNode) => {
       if (domNode instanceof Element) {
         if (domNode.tagName === "p") {
+          const children = Array.isArray(domNode.children)
+            ? domNode.children
+            : [domNode.children];
+
+          const imgChild = children.find(
+            (child) => child instanceof Element && child.tagName === "img"
+          );
+
+          if (imgChild) {
+            return <></>;
+          }
+
           return (
             <Text fontSize={["md", "md"]} fontWeight="light" as={"p"}>
               {domToReact(domNode.children)}
@@ -106,21 +118,7 @@ const SistemaDeGestionParaHoteles = ({ page }: { page: Page }) => {
           );
         } else if (domNode.tagName === "img") {
           const { src, alt } = domNode.attribs;
-          return (
-            <Flex py={"16"} justifyContent={"center"} alignItems={"center"}>
-              <Image
-                src={src}
-                alt={alt}
-                rounded="lg"
-                overflow={"hidden"}
-                transition={"all .2s"}
-                _hover={{
-                  transform: "scale(1.05) ",
-                  // transform: "scale(1.1) rotate(-1deg)",
-                }}
-              />
-            </Flex>
-          );
+          return <></>;
         } else if (domNode.tagName === "iframe") {
           const { src } = domNode.attribs;
           return (
